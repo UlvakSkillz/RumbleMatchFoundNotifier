@@ -5,6 +5,7 @@ using System.Threading;
 using MelonLoader;
 using RUMBLE.Managers;
 using UnityEngine;
+using RumbleModUI;
 
 namespace Match_Found_Notifier
 {
@@ -17,17 +18,45 @@ namespace Match_Found_Notifier
         private bool matchFoundPlayed = false;
         private MatchmakingHandler matchmakingHandler;
         private bool gymInitRan = false;
+        UI UI = UI.instance;
+        private Mod MatchFoundNotifier = new Mod();
+        bool openImage = true;
+        bool playSound = true;
+
+        public override void OnLateInitializeMelon()
+        {
+            MatchFoundNotifier.ModName = "Match Found Notifier";
+            MatchFoundNotifier.ModVersion = "1.1.0";
+            MatchFoundNotifier.SetFolder("MatchFound");
+            MatchFoundNotifier.AddDescription("Description", "Description", "Plays Sound and Opens Image on Match Found", true);
+            MatchFoundNotifier.AddToList("Play Sound", true, 0, "Toggle for Playing Sound");
+            MatchFoundNotifier.AddToList("Open Image", true, 0, "Toggle for Opening Image");
+            MatchFoundNotifier.GetFromFile();
+            MatchFoundNotifier.ModSaved += Save;
+            UI.instance.UI_Initialized += UIInit;
+            openImage = (bool)MatchFoundNotifier.Settings[1].Value;
+            playSound = (bool)MatchFoundNotifier.Settings[2].Value;
+        }
+
+        public void UIInit()
+        {
+            UI.AddMod(MatchFoundNotifier);
+        }
+
+        public void Save()
+        {
+            openImage = (bool)MatchFoundNotifier.Settings[1].Value;
+            playSound = (bool)MatchFoundNotifier.Settings[2].Value;
+        }
 
         //run every update
         public override void OnUpdate()
         {
-            //normal updates
-            base.OnUpdate();
             if ((currentScene == "Gym") && (!gymInitRan))
             {
                 try
                 {
-                    matchmakingHandler = GameObject.Find("--------------LOGIC--------------/Handelers/Matchmaking handler").GetComponent<MatchmakingHandler>();
+                    matchmakingHandler = MatchmakingHandler.instance;
                     gymInitRan = true;
                 }
                 catch (Exception e)
@@ -66,8 +95,8 @@ namespace Match_Found_Notifier
         //Plays the Notifications
         public void PlayNotifications()
         {
-            PlayNotificationPhoto();
-            PlayNotificationSound();
+            if (openImage) { PlayNotificationPhoto(); }
+            if (playSound) { PlayNotificationSound(); }
         }
 
         //

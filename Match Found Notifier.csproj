@@ -45,6 +45,9 @@
     <Reference Include="MelonLoader">
       <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\MelonLoader\MelonLoader.dll</HintPath>
     </Reference>
+    <Reference Include="ModUI">
+      <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\Mods\ModUI.dll</HintPath>
+    </Reference>
     <Reference Include="RUMBLE.Runtime">
       <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\MelonLoader\Managed\RUMBLE.Runtime.dll</HintPath>
     </Reference>

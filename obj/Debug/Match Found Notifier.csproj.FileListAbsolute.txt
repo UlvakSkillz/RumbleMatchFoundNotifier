@@ -122,3 +122,4 @@ C:\Users\austi\source\repos\Match Found Notifier\Match Found Notifier\bin\Debug\
 C:\Users\austi\source\repos\Match Found Notifier\Match Found Notifier\bin\Debug\RUMBLE.Platform.Info.dll
 C:\Users\austi\source\repos\Match Found Notifier\Match Found Notifier\bin\Debug\com.rlabrecque.steamworks.net.dll
 C:\Users\austi\source\repos\Match Found Notifier\Match Found Notifier\obj\Debug\Match Found Notifier.csproj.AssemblyReference.cache
+C:\Users\austi\source\repos\Match Found Notifier\Match Found Notifier\bin\Debug\ModUI.dll
