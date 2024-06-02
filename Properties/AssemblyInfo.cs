@@ -3,9 +3,14 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using MelonLoader;
 using Match_Found_Notifier; // The namespace of your mod class
+using System;
 // ...
-[assembly: MelonInfo(typeof(MatchFoundNotifierClass), "Rumble: Match Found Notifier Mod", "1.1.0", "UlvakSkillz")]
+[assembly: MelonInfo(typeof(MatchFoundNotifierClass), "Rumble Match Found Notifier", "1.1.1", "UlvakSkillz")]
 [assembly: MelonGame("Buckethead Entertainment", "RUMBLE")]
+[assembly: MelonColor(ConsoleColor.Magenta)]
+[assembly: MelonAuthorColor(ConsoleColor.Magenta)]
+[assembly: VerifyLoaderVersion(0, 5, 7)]
+
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.

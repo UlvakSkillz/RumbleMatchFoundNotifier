@@ -25,12 +25,12 @@ namespace Match_Found_Notifier
 
         public override void OnLateInitializeMelon()
         {
-            MatchFoundNotifier.ModName = "Match Found Notifier";
-            MatchFoundNotifier.ModVersion = "1.1.0";
+            MatchFoundNotifier.ModName = "Rumble Match Found Notifier";
+            MatchFoundNotifier.ModVersion = "1.1.1";
             MatchFoundNotifier.SetFolder("MatchFound");
-            MatchFoundNotifier.AddDescription("Description", "Description", "Plays Sound and Opens Image on Match Found", true);
-            MatchFoundNotifier.AddToList("Play Sound", true, 0, "Toggle for Playing Sound");
-            MatchFoundNotifier.AddToList("Open Image", true, 0, "Toggle for Opening Image");
+            MatchFoundNotifier.AddDescription("Description", "Description", "Plays Sound and Opens Image on Match Found", new Tags { IsSummary = true });
+            MatchFoundNotifier.AddToList("Play Sound", true, 0, "Toggle for Playing Sound", new Tags { });
+            MatchFoundNotifier.AddToList("Open Image", true, 0, "Toggle for Opening Image", new Tags { });
             MatchFoundNotifier.GetFromFile();
             MatchFoundNotifier.ModSaved += Save;
             UI.instance.UI_Initialized += UIInit;
