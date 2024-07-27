@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Media;
-using System.Threading;
 using MelonLoader;
-using RUMBLE.Managers;
+using Il2CppRUMBLE.Managers;
 using UnityEngine;
 using RumbleModUI;
+using System.Collections;
+using NAudio.Wave;
+using MelonLoader.Utils;
 
 namespace Match_Found_Notifier
 {
@@ -13,7 +14,6 @@ namespace Match_Found_Notifier
     {
         //variables
         private string currentScene = "";
-        private static Thread soundThread;
         private static bool soundThreadActive = false;
         private bool matchFoundPlayed = false;
         private MatchmakingHandler matchmakingHandler;
@@ -26,7 +26,7 @@ namespace Match_Found_Notifier
         public override void OnLateInitializeMelon()
         {
             MatchFoundNotifier.ModName = "Rumble Match Found Notifier";
-            MatchFoundNotifier.ModVersion = "1.1.1";
+            MatchFoundNotifier.ModVersion = "2.0.1";
             MatchFoundNotifier.SetFolder("MatchFound");
             MatchFoundNotifier.AddDescription("Description", "Description", "Plays Sound and Opens Image on Match Found", new Tags { IsSummary = true });
             MatchFoundNotifier.AddToList("Play Sound", true, 0, "Toggle for Playing Sound", new Tags { });
@@ -108,11 +108,24 @@ namespace Match_Found_Notifier
             OpenExternalProgram(photoFilePath, "");
         }
 
+        private IEnumerator PlaySound(string FilePath)
+        {
+            var reader = new Mp3FileReader(FilePath);
+            var waveOut = new WaveOutEvent();
+            waveOut.Init(reader);
+            waveOut.Play();
+            while (waveOut.PlaybackState == PlaybackState.Playing)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+            yield break;
+        }
+
         //Plays the Notification Sound
         public void PlayNotificationSound()
         {
             //file path to notification sound
-            string soundFilePath = @"UserData\MatchFound\NotificationSound.wav";
+            string soundFilePath = MelonEnvironment.UserDataDirectory + @"\MatchFound\NotificationSound.mp3";
             try
             {
                 // Ensure that only one sound is playing at a time
@@ -121,28 +134,7 @@ namespace Match_Found_Notifier
                     MelonLogger.Msg("Sound is already playing. Ignoring request.");
                     return;
                 }
-
-                // Create a SoundPlayer instance with the specified sound file path
-                using (SoundPlayer player = new SoundPlayer(soundFilePath))
-                {
-                    // Set flag to indicate that a sound is currently playing
-                    soundThreadActive = true;
-
-                    // Create a new thread if no thread is active
-                    if (soundThread == null || !soundThread.IsAlive)
-                    {
-                        soundThread = new Thread(() =>
-                        {
-                            player.PlaySync(); // Use PlaySync for synchronous playback
-
-                            // Reset flag to indicate that the sound has finished playing
-                            soundThreadActive = false;
-                        });
-
-                        // Start the thread
-                        soundThread.Start();
-                    }
-                }
+                MelonCoroutines.Start(PlaySound(soundFilePath));
             }
             catch (Exception ex)
             {
